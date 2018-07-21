@@ -24,7 +24,6 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then( books => {
-      console.log(books);
       this.setState({ books } );
     })
   }
@@ -67,7 +66,8 @@ class BooksApp extends React.Component {
                 { shelfs.map( shelf => (
                   <Shelf
                     key={shelf}
-                    shelf={shelfsNames[shelf]}
+                    shelf={shelf}
+                    shelfTitle={shelfsNames[shelf]}
                     books={this.getBooksByShelf(shelf)}
                   />
                 ) ) }
