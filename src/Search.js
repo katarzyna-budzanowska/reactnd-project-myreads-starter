@@ -10,8 +10,8 @@ class Search extends React.Component{
     searching: ''
   }
 
-  findBookInList = ( id, booksList ) => {
-    const bookIndex = booksList.findIndex( book => book.id === id );
+  findBookInList = (id, booksList) => {
+    const bookIndex = booksList.findIndex(book => book.id === id);
     if( bookIndex !== -1 ) {
       return booksList[ bookIndex ];
     }
@@ -19,10 +19,9 @@ class Search extends React.Component{
     return null;
   }
 
-  search = ( event ) => {
-    console.log( event.target.value );
+  search = (event) => {
     //no search
-    if( event.target.value === '' ) {
+    if(event.target.value === '') {
       this.setState({
         books: [],
         error: null,
@@ -33,13 +32,12 @@ class Search extends React.Component{
     this.setState({searching: event.target.value});
     const searching = event.target.value;
     //search
-    BooksAPI.search( event.target.value.trim() ).then( books => {
-      if( this.state.searching !== searching ) {
+    BooksAPI.search(event.target.value.trim()).then( books => {
+      if(this.state.searching !== searching) {
         return;
       }
 
-      if( books.error ) {
-        console.log(books)
+      if(books.error) {
         this.setState({
           books: [],
           error: books.error
@@ -47,11 +45,10 @@ class Search extends React.Component{
          return;
       }
 
-      console.log(books);
-      books = books.map( book => {
+      books = books.map(book => {
         const myBook = this.findBookInList( book.id, this.props.books );
         return myBook ? myBook : book;
-      } );
+      });
       this.setState({
         books,
         error: null
