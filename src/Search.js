@@ -1,31 +1,82 @@
 import React from 'react'
-import Book from './Book'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
+import Shelf from './Shelf'
 
-class Shelf extends React.Component{
+class Search extends React.Component{
+  state = {
+    books: [],
+    error: null,
+  }
+
+  findBookInList = ( id, booksList ) => {
+    const bookIndex = booksList.findIndex( book => book.id === id );
+    if( bookIndex !== -1 ) {
+      return booksList[ bookIndex ];
+    }
+
+    return null;
+  }
+
+  search = ( event ) => {
+    //no search
+    if( event.target.value === '' ) {
+      this.setState({
+        books: [],
+        error: null,
+       })
+       return;
+    }
+
+    //search
+    BooksAPI.search( event.target.value ).then( books => {
+      if( books.error ) {
+        this.setState({
+          books: [],
+          error: books.error,
+         })
+         return;
+      }
+
+      books = books.map( book => {
+        const myBook = this.findBookInList( book.id, this.props.books );
+        return myBook ? myBook : book;
+      } );
+      this.setState({
+        books,
+        error: null
+      });
+    } )
+  }
+
   render() {
     return (
       <div className="search-books">
         <div className="search-books-bar">
           <Link to="/" className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
-            {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
-            <input type="text" placeholder="Search by title or author"/>
+            <input type="text" placeholder="Search by title or author" onChange={this.search}/>
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+            { this.state.books.length > 0 &&
+              <Shelf
+                key="found"
+                shelf="found"
+                shelfTitle={ "Results   count: " + this.state.books.length }
+                books={this.state.books}
+                change={this.props.change}
+              />
+            }
+            { this.state.error === 'empty query' &&
+              <div className="bookshelf">
+                <h2 className="bookshelf-title">"Nothing Found"</h2>
+              </div>
+            }
         </div>
       </div>
     );
   }
 }
 
-export default Shelf;
+export default Search;

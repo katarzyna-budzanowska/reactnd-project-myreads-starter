@@ -1,4 +1,5 @@
 import React from 'react'
+import no_cover from './img/no_cover.png'
 
 class Book extends React.Component{
   changeBookShelf = ( event ) => {
@@ -7,14 +8,22 @@ class Book extends React.Component{
     this.props.change( updatedBook );
   }
 
+  getImageLink = () => {
+    if( this.props.book.imageLinks && this.props.book.imageLinks.smallThumbnail ) {
+      return 'url("' + this.props.book.imageLinks.smallThumbnail + '")';
+    } else {
+      return 'url("' + no_cover + '")';
+    }
+  }
+
   render() {
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("' + this.props.book.imageLinks.smallThumbnail + '")' }}></div>
+          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: this.getImageLink() }}></div>
           <div className="book-shelf-changer">
             <select
-              value={this.props.shelf}
+              value={this.props.book.shelf ? this.props.book.shelf : 'none' }
               onChange={this.changeBookShelf}
             >
               <option value="move" disabled>Move to...</option>

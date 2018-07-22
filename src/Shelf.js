@@ -12,7 +12,7 @@ class Shelf extends React.Component{
                 <li key={book.id} >
                   <Book
                     book={book}
-                    shelf={this.props.shelf}
+                    shelf={book.shelf}
                     change={this.props.change}
                   />
                 </li>
