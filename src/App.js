@@ -20,21 +20,21 @@ class BooksApp extends React.Component {
     })
   }
 
-  change = ( updatedBook ) => {
-    this.updateBook( updatedBook );
+  change = (updatedBook) => {
+    this.updateBook(updatedBook);
   }
 
-  updateBook = ( book ) => {
+  updateBook = (book) => {
     const books = [...this.state.books];
-    const bookIndex = books.findIndex( _book => _book.id === book.id );
-    if( bookIndex === -1 ) {
+    const bookIndex = books.findIndex(_book => _book.id === book.id);
+    if(bookIndex === -1) {
       books.push( book );
     }
     else {
       books[bookIndex] = book;
     }
-    this.setState( { books } );
-    BooksAPI.update( book, book.shelf );
+    this.setState({ books });
+    BooksAPI.update(book, book.shelf);
   }
 
   render() {

@@ -11,8 +11,8 @@ const shelfsNames = {
 
 class Books extends React.Component{
 
-  getBooksByShelf = ( shelf ) => {
-    return this.props.books.filter( book => book.shelf === shelf );
+  getBooksByShelf = (shelf) => {
+    return this.props.books.filter(book => book.shelf === shelf);
   }
 
   render() {
