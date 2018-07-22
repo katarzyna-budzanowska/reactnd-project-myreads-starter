@@ -33,7 +33,7 @@ class Search extends React.Component{
     this.setState({searching: event.target.value});
     const searching = event.target.value;
     //search
-    BooksAPI.search( event.target.value ).then( books => {
+    BooksAPI.search( event.target.value.trim() ).then( books => {
       if( this.state.searching !== searching ) {
         return;
       }
