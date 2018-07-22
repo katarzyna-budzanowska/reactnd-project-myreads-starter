@@ -7,6 +7,7 @@ class Search extends React.Component{
   state = {
     books: [],
     error: null,
+    searching: ''
   }
 
   findBookInList = ( id, booksList ) => {
@@ -19,25 +20,34 @@ class Search extends React.Component{
   }
 
   search = ( event ) => {
+    console.log( event.target.value );
     //no search
     if( event.target.value === '' ) {
       this.setState({
         books: [],
         error: null,
+        searching: ''
        })
        return;
     }
-
+    this.setState({searching: event.target.value});
+    const searching = event.target.value;
     //search
     BooksAPI.search( event.target.value ).then( books => {
+      if( this.state.searching !== searching ) {
+        return;
+      }
+
       if( books.error ) {
+        console.log(books)
         this.setState({
           books: [],
-          error: books.error,
+          error: books.error
          })
          return;
       }
 
+      console.log(books);
       books = books.map( book => {
         const myBook = this.findBookInList( book.id, this.props.books );
         return myBook ? myBook : book;
@@ -46,7 +56,7 @@ class Search extends React.Component{
         books,
         error: null
       });
-    } )
+    })
   }
 
   render() {
@@ -55,7 +65,12 @@ class Search extends React.Component{
         <div className="search-books-bar">
           <Link to="/" className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
-            <input type="text" placeholder="Search by title or author" onChange={this.search}/>
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              value={this.state.searching}
+              onChange={this.search}
+            />
           </div>
         </div>
         <div className="search-books-results">
