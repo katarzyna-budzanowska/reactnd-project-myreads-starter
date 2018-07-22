@@ -85,7 +85,7 @@ class Search extends React.Component{
             }
             { this.state.error === 'empty query' &&
               <div className="bookshelf">
-                <h2 className="bookshelf-title">"Nothing Found"</h2>
+                <h2 className="bookshelf-title">Nothing Found</h2>
               </div>
             }
         </div>
